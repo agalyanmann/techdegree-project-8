@@ -2,4 +2,19 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p
+    a.button(href="new_book.html") Create New Book 
+  table
+    thead
+      tr
+        th Title 
+        th Author 
+        th Genre 
+        th Year
+    tbody 
+      tr 
+        td
+          a(href="bood_detail.html") A Brief Histroy of Time
+        td Stephan Hawking 
+        td Non Finction
+        td 1988 
