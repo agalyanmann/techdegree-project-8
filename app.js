@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
+const booksRouter = require('./routes/books');
 const { sequelize } = require('./models');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/books', booksRouter);
 
 
 // catch 404 and forward to error handler
