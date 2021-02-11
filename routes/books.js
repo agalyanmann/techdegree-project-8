@@ -49,8 +49,18 @@ router.get('/:id', asyncHandler(async (req, res) => {
       res.render('update-book', { book, title: book.title });
     } else {
       res.sendStatus(404);
-    }
-  
+    } 
   }));
+
+//POST update individual book
+router.post('/:id', asyncHandler(async (req, res) => {
+const book = await Book.findByPk(req.params.id);
+if (book) {
+    await book.update(req.body);
+    res.redirect('/');
+} else {
+    res.sendStatus(404);
+}
+}));
 
 module.exports = router;
