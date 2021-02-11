@@ -24,10 +24,10 @@ router.get('/', asyncHandler(async (req, res) => {
 //GET new book form
 router.get('/new', asyncHandler(async (req, res) => {
     res.render('new-book', { title: 'New Book', book: {} });
-})); 
+}));
 
 //POST new book to db
-router.post('/', asyncHandler(async (req, res) =>{
+router.post('/', asyncHandler(async (req, res) => {
     let book;
     try {
         book = await Book.create(req.body);
@@ -35,7 +35,7 @@ router.post('/', asyncHandler(async (req, res) =>{
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             book = await Book.build(req.body);
-            res.render('new-book', { book, errors: error.errors, title: 'New Book'})
+            res.render('new-book', { book, errors: error.errors, title: 'New Book' })
             console.log(error);
         } else {
             throw error;
@@ -47,21 +47,31 @@ router.post('/', asyncHandler(async (req, res) =>{
 router.get('/:id', asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
     if (book) {
-      res.render('update-book', { book, title: book.title });
+        res.render('update-book', { book, title: book.title });
     } else {
-      res.sendStatus(404);
-    } 
-  }));
+        res.render('page-not-found');
+    }
+}));
 
 //POST update individual book
 router.post('/:id', asyncHandler(async (req, res) => {
-const book = await Book.findByPk(req.params.id);
-if (book) {
-    await book.update(req.body);
-    res.redirect('/');
-} else {
-    res.sendStatus(404);
-}
+    try {
+        const book = await Book.findByPk(req.params.id);
+        if (book) {
+            await book.update(req.body);
+            res.redirect('/');
+        } else {
+            res.render('page-not-found');
+        }
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError') {
+            book = await Book.build(req.body);
+            res.render('new-book', { book, errors: error.errors, title: 'New Book' })
+            console.log(error);
+        } else {
+            throw error;
+        }
+    }
 }));
 
 //POST delete individual book
