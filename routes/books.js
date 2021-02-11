@@ -16,11 +16,16 @@ function asyncHandler(cb) {
 
 router.get('/', asyncHandler(async (req, res) => {
     const books = await Book.findAll();
-    res.render('index', { books });
+    res.render('index', { title: 'Books', books });
 }));
 
 router.get('/new', asyncHandler(async (req, res) => {
-    res.render('new-book', {prop: 'Hello I am a new book!'});
+    res.render('new-book', { title: 'New Book', book: {} });
+})); 
+
+router.post('/', asyncHandler(async (req, res) =>{
+    console.log(req.body);
+    res.redirect('/books/' + book.id);
 }));
 
 module.exports = router;
