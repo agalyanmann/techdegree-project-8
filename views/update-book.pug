@@ -1,5 +1,10 @@
 extends layout 
 
 block content 
-
-    
+    h1 Update Book
+    form(action="/books")
+        p
+            label(for="title") Title
+            input#title(name="title" type="text" value=book.title)
+        p 
+            input(type="submit" value="Update Book")

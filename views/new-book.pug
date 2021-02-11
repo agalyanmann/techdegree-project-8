@@ -6,7 +6,7 @@ block content
     form(action="/books" method="post") 
         p 
             label(for="title") Title
-            input(name="title" type="text" value=book.title)
+            input#title(name="title" type="text" value=book.title)
         p 
             label(for="author") Author 
             input(name="author" type="text" value=book.author) 
