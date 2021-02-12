@@ -15,10 +15,10 @@ function asyncHandler(cb) {
 }
 
 router.get('/error', (req, res, next) => {
-    const err =   new Error();
-    err.message = 'Custom 500 error';
-    err.status = 500;
-    throw err;
+    const error =   new Error();
+    error.status = 500;
+    error.message = 'Custom 500 error';
+    throw error;
 });
 
 
@@ -43,7 +43,6 @@ router.post('/', asyncHandler(async (req, res) => {
         if (error.name === 'SequelizeValidationError') {
             book = await Book.build(req.body);
             res.render('new-book', { book, errors: error.errors, title: 'New Book' })
-            console.log(error);
         } else {
             throw error;
         }
@@ -56,7 +55,10 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (book) {
         res.render('update-book', { book, title: book.title });
     } else {
-        res.sendStatus(404);
+        const err = new Error();
+        err.status = 404;
+        err.message = 'Sorry, this book does not exist.'
+        throw err;
     }
 }));
 
