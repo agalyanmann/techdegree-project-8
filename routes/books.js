@@ -14,6 +14,13 @@ function asyncHandler(cb) {
     }
 }
 
+router.get('/error', (req, res, next) => {
+    const err =   new Error();
+    err.message = 'Custom 500 error';
+    err.status = 500;
+    throw err;
+});
+
 
 //GET homepage
 router.get('/', asyncHandler(async (req, res) => {
@@ -49,29 +56,19 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (book) {
         res.render('update-book', { book, title: book.title });
     } else {
-        res.render('page-not-found');
+        res.sendStatus(404);
     }
 }));
 
 //POST update individual book
 router.post('/:id', asyncHandler(async (req, res) => {
-    try {
         const book = await Book.findByPk(req.params.id);
         if (book) {
             await book.update(req.body);
             res.redirect('/');
         } else {
-            res.render('page-not-found');
+            res.sendStatus(404);
         }
-    } catch (error) {
-        if (error.name === 'SequelizeValidationError') {
-            book = await Book.build(req.body);
-            res.render('new-book', { book, errors: error.errors, title: 'New Book' })
-            console.log(error);
-        } else {
-            throw error;
-        }
-    }
 }));
 
 //POST delete individual book

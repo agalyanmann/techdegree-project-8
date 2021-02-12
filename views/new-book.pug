@@ -3,7 +3,7 @@ extends layout
 block content 
 
     h1 New Book
-    include error
+    include validation-error
     form(action="/books" method="post") 
         p 
             label(for="title") Title
