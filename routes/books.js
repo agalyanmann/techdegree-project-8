@@ -8,14 +8,15 @@ function asyncHandler(cb) {
         try {
             await cb(req, res, next)
         } catch (error) {
-            // Forward error to the global error handler
             next(error);
         }
     }
 }
 
+
+//505 test error located at localhost:port/books/error
 router.get('/error', (req, res, next) => {
-    const error =   new Error();
+    const error = new Error();
     error.status = 500;
     error.message = 'Custom 500 error';
     throw error;
@@ -64,13 +65,11 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 //POST update individual book
 router.post('/:id', asyncHandler(async (req, res) => {
-        const book = await Book.findByPk(req.params.id);
-        if (book) {
-            await book.update(req.body);
-            res.redirect('/');
-        } else {
-            res.sendStatus(404);
-        }
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+        await book.update(req.body);
+        res.redirect('/');
+    }
 }));
 
 //POST delete individual book
