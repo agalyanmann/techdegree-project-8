@@ -49,7 +49,7 @@ app.use(function (err, req, res, next) {
   if (err.status === 404) {
     res.status(404).render('page-not-found', { err });
   } else {
-    err.message = err.message || 'Something is Fucked!'
+    err.message = err.message || 'Something is wrong!'
     res.status(err.status || 500).render('error', { err });
   }
 });
